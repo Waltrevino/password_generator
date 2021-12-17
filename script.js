@@ -127,45 +127,53 @@ function passwordOptions() {
   }
 
   return userInputs;
-
 }
 
 function generatePassword() {
   var options = passwordOptions();
-  var a = [];
-  var b = [];
-  var c = [];
-  var myGeneratedNumber;
-  var myGeneratedSpecialChar;
-  var myGeneratedUpperCaseLetter;
-  var myGeneratedLowerCaseLetter;
-  var myGeneratedPassword;
+  var result = [];
+  var possibleChars = [];
+  var definiteChars = [];
+
   // for (var i = 0; i < length; i++) {
     if (options.hasNumbers) {
-      var randNumeric = Math.floor(Math.random() * numericCharacters.length) + 1;
-      // alert(numericCharacters[randNumeric]);
-      myGeneratedNumber = numericCharacters[randNumeric];
-      myGeneratedPassword = myGeneratedNumber;
+      possibleChars = possibleChars.concat(numericCharacters);
+      definiteChars.push(getRandChar(numericCharacters));
     }
+
     if (options.hasSpecialChars) {
-      var randSpecialChar = Math.floor(Math.random() * specialCharacters.length) + 1;
-      myGeneratedSpecialChar = specialCharacters[randSpecialChar];
-      myGeneratedPassword += myGeneratedSpecialChar;
+      possibleChars = possibleChars.concat(specialCharacters);
+      definiteChars.push(getRandChar(specialCharacters))
     }
+
     if (options.hasUpperCaseChars) {
-      var randUpperCase = Math.floor(Math.random() * upperCasedCharacters.length) + 1;
-      myGeneratedUpperCaseLetter = upperCasedCharacters[randUpperCase];
-      myGeneratedPassword += myGeneratedUpperCaseLetter;
+      possibleChars = possibleChars.concat(upperCasedCharacters);
+      definiteChars.push(getRandChar(upperCasedCharacters));
     }
+
     if (options.hasLowerCaseChars) {
-      var randLowerCase = Math.floor(Math.random() * lowerCasedCharacters.length) + 1;
-      myGeneratedLowerCaseLetter = specialCharacters[randLowerCase];
-      myGeneratedPassword += myGeneratedLowerCaseLetter;
-      return myGeneratedPassword;
+      possibleChars = possibleChars.concat(lowerCasedCharacters);
+      definiteChars.push(getRandChar(lowerCasedCharacters));
     }
-  // }  
+
+    for (var i = 0; i < options.length; i++){
+      var possibleChar = getRandChar(possibleChars);
+      result.push(possibleChar);
+    }
+
+    for (var i = 0; i < definiteChars.length; i++ ){
+      result[i] = definiteChars[i];
+    }
+    console.log(result)
+    return result.join('');
+
 }
 
+function getRandChar(arr){
+  var randIndex = Math.floor(Math.random() * (arr.length + 1) );
+  var randChar = arr[randIndex];
+  return randChar;
+}
 
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
@@ -176,7 +184,6 @@ function writePassword() {
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
-
 }
 
 // Add event listener to generate button
